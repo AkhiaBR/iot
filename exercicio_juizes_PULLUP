@@ -1,0 +1,41 @@
+const int pinjuiz01 = 3; // Definição dos pinos
+const int pinjuiz02 = 4;
+const int pinjuiz03 = 5;
+const int pinjuiz04 = 6;
+const int led_aprovado = 10;
+const int led_reprovado = 9;
+const int led_empate = 8;
+
+void setup() { //Configuração dos pinos
+  pinMode(pinjuiz01, INPUT_PULLUP); // PULLUP faz com que o programa utilize o resistor do Arduino
+  pinMode(pinjuiz02, INPUT_PULLUP); // O PULLUP também mantém os pinos em estado TRUE
+  pinMode(pinjuiz03, INPUT_PULLUP);
+  pinMode(pinjuiz04, INPUT_PULLUP);
+  pinMode(led_aprovado, OUTPUT);
+  pinMode(led_reprovado, OUTPUT);
+  pinMode(led_empate, OUTPUT);
+}
+
+void loop() {
+  bool juiz01 = !digitalRead(pinjuiz01); // !digitalRead() inverte a leitura dos pinos dos juízes já que são do tipo PULLUP
+  bool juiz02 = !digitalRead(pinjuiz02);
+  bool juiz03 = !digitalRead(pinjuiz03);
+  bool juiz04 = !digitalRead(pinjuiz04);
+  int resultado_votacao = juiz01 + juiz02 + juiz03 + juiz04; // A soma da votação decidirá a qual LED será ligado de acordo com as condições abaixo
+  
+  if(resultado_votacao >= 3){
+    digitalWrite(led_aprovado, HIGH);
+    digitalWrite(led_empate, LOW);
+    digitalWrite(led_reprovado, LOW);
+  }
+  else if(resultado_votacao == 2){
+    digitalWrite(led_empate, HIGH);
+    digitalWrite(led_aprovado, LOW);
+    digitalWrite(led_reprovado, LOW);
+  }
+  else if(resultado_votacao <= 1){
+    digitalWrite(led_reprovado, HIGH);
+    digitalWrite(led_aprovado, LOW);
+    digitalWrite(led_empate, LOW);
+  }
+}
